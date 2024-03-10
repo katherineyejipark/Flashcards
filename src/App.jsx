@@ -29,20 +29,57 @@ const App = () => {
   ]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [userGuess, setUserGuess] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const [feedbackClass, setFeedbackClass] = useState('');
+  const [rightOrWrong, setRightOrWrong] = useState('');
 
   const handleCardClick = () => {
     setShowAnswer(!showAnswer);
   };
 
-  const handleNextCard = () => {
-    let nextCardIndex;
-    do {
-      nextCardIndex = Math.floor(Math.random() * cards.length);
-    } while (nextCardIndex === currentCardIndex);
-
-    setCurrentCardIndex(nextCardIndex);
-    setShowAnswer(false);
+  const handleGuessSubmit = () => {
+    if (showAnswer) {
+      setFeedback('Incorrect!');
+      setFeedbackClass('incorrect');
+      setRightOrWrong('incorrect');
+    } else {
+      const correctAnswer = cards[currentCardIndex].answer;
+      if (userGuess.toLowerCase() === correctAnswer.toLowerCase()) {
+        setFeedback('Correct!');
+        setFeedbackClass('correct');
+        setRightOrWrong('correct');
+      } else {
+        setFeedback('Incorrect!');
+        setFeedbackClass('incorrect');
+        setRightOrWrong('incorrect');
+      }
+    }
   };
+  
+    const handlePreviousCard = () => {
+      const prevCardIndex = currentCardIndex === 0 ? cards.length - 1 : currentCardIndex - 1;
+      setCurrentCardIndex(prevCardIndex);
+      setShowAnswer(false);
+      setFeedback('');
+      setFeedbackClass('');
+      setUserGuess('');
+      setRightOrWrong('');
+    };
+  
+    const handleNextCard = () => {
+      const nextCardIndex = (currentCardIndex + 1) % cards.length;
+      setCurrentCardIndex(nextCardIndex);
+      setShowAnswer(false);
+      setFeedback('');
+      setFeedbackClass('');
+      setUserGuess('');
+      setRightOrWrong('');
+    };
+
+    const handleInputChange = (event) => {
+        setUserGuess(event.target.value);
+    };
 
   return (
     <div className="App">
@@ -60,8 +97,20 @@ const App = () => {
         showAnswer={showAnswer}
         onClick={handleCardClick}
       />
-      <button className="next-button" onClick={handleNextCard}>Next</button>
+      <p>Guess the answer below!</p>
 
+      <input  
+              className={rightOrWrong}
+              type="text"
+              placeholder="Enter your guess"
+              value={userGuess}
+              onChange={handleInputChange}
+            />
+            <button className="submitGuess-button" onClick={handleGuessSubmit}>Submit Guess</button>
+            <p>{feedback}</p>
+      
+            <button className="prev-button" onClick={handlePreviousCard}>Previous</button>
+            <button className="next-button" onClick={handleNextCard}>Next</button>
     </div>
   )
 }

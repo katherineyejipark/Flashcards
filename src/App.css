@@ -63,6 +63,23 @@
   cursor: pointer;
 }
 
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid;
+}
+
+.incorrect {
+  background-color: rgba(255, 53, 8, 0.434);
+  color: white;
+}
+
+.correct {
+  background-color: rgba(0, 68, 254, 0.214);
+  color: white;
+}
+
+
 button {
   padding: 10px 20px;
   font-size: 16px;
